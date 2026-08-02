@@ -47,3 +47,4 @@ node scripts/restore-bash-description.mjs
 
 - 升级（`omp update` / `bun install -g`）会覆盖 node_modules 中的补丁；核心包更新是手动触发，无后台自动安装
 - 实验完成后应把此补丁提 PR 到上游（can1357/oh-my-pi），合并发版后本补丁退役
+- 本补丁的由来、用户批评与工作原则（B/A 决策、契约 vs 实现、规则三要素等）见同目录 `AGENT-FEEDBACK.md`
