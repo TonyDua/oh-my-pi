@@ -1,9 +1,13 @@
-Runs commands in a persistent shell.
+Runs commands in the embedded `brush` shell — a Rust bash-compatible shell (not the host bash; session per call, retained only while background jobs run).
 
 Use ONLY for one binary or a short pipeline that computes a fact (`wc -l`, `sort | uniq -c`, `diff`).
 {{#if hasEval}}Inline scripts, heredocs, `$(…)`, complex control flow/quoting, and non-trivial pipelines → `eval`.{{else}}Inline scripts, heredocs, `$(…)`, and complex control flow → a purpose-built tool or checked-in script.{{/if}}
 
 <instruction>
+- POSIX quoting applies: `$var`/`$_` expand inside double quotes, NOT inside single quotes. Wrap child-interpreter commands (PowerShell etc.) in single quotes: `powershell -NoProfile -Command '…'`, with inner strings in double quotes.{{#if isWindows}}
+- Paths: use `C:/…` or `~/…`. MSYS/WSL forms (`/c/…`, `/mnt/c/…`) resolve ONLY in shell builtins like `cd`, never in external commands (`ls /c/…` fails).
+- `$env:NAME` is protected and passes through verbatim — safe inside double quotes too.
+- Console output garbles non-ASCII; keep diagnostics ASCII/English.{{/if}}
 - Set `cwd` instead of `cd`; use `env: { NAME: "…" }` for multiline/quote-heavy values.
 - `pty: true` only for terminal interaction (`sudo`, `ssh`).
 - Order-dependent commands use `&&` in one call; independent calls may run concurrently.
